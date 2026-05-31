@@ -15,6 +15,8 @@ export default function DataCard({ data, onClear, overlay }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
     const ctx = gsap.context(() => {
       gsap.from(cardRef.current, {
         opacity: 0,
@@ -33,6 +35,7 @@ export default function DataCard({ data, onClear, overlay }) {
   return (
     <div
       ref={cardRef}
+      role="status"
       className={`rounded-xl border ${overlay ? "border-white/20" : "border-border"} ${overlay ? "bg-white/90 backdrop-blur-xl" : "bg-surface"} p-4 shadow-sm`}
     >
       <div className="mb-3 flex items-start justify-between">
@@ -42,7 +45,7 @@ export default function DataCard({ data, onClear, overlay }) {
               isWarning ? "bg-amber-50 text-amber-600" : "bg-green-50 text-green-600"
             }`}
           >
-            {isWarning ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
+            {isWarning ? <AlertTriangle size={18} aria-hidden="true" /> : <CheckCircle2 size={18} aria-hidden="true" />}
           </div>
           <div>
             <p className="text-sm font-medium text-foreground">
@@ -53,25 +56,26 @@ export default function DataCard({ data, onClear, overlay }) {
         </div>
         <button
           onClick={onClear}
-          className="rounded-lg p-1 text-muted hover:bg-border/50 hover:text-foreground transition-colors"
+          className="rounded-lg p-1 text-muted hover:bg-border/50 hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-primary"
+          aria-label="Descartar resultados"
         >
-          <X size={14} />
+          <X size={14} aria-hidden="true" />
         </button>
       </div>
 
       <div className="mb-3 grid grid-cols-3 gap-2">
         <div className={`rounded-lg ${bg} p-2 text-center`}>
-          <MapPin size={14} className="mx-auto mb-0.5 text-primary" />
+          <MapPin size={14} className="mx-auto mb-0.5 text-primary" aria-hidden="true" />
           <p className="text-base font-semibold text-foreground">{data.coordinates}</p>
           <p className="text-[10px] text-muted">Puntos</p>
         </div>
         <div className={`rounded-lg ${bg} p-2 text-center`}>
-          <Droplets size={14} className={`mx-auto mb-0.5 ${isWarning ? "text-amber-500" : "text-green-500"}`} />
+          <Droplets size={14} className={`mx-auto mb-0.5 ${isWarning ? "text-amber-500" : "text-green-500"}`} aria-hidden="true" />
           <p className="text-base font-semibold text-foreground">{data.leaks}</p>
           <p className="text-[10px] text-muted">Fugas</p>
         </div>
         <div className={`rounded-lg ${bg} p-2 text-center`}>
-          <Hash size={14} className="mx-auto mb-0.5 text-accent" />
+          <Hash size={14} className="mx-auto mb-0.5 text-accent" aria-hidden="true" />
           <p className="text-base font-semibold text-foreground">{data.sectors.length}</p>
           <p className="text-[10px] text-muted">Sectores</p>
         </div>

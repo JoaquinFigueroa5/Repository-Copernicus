@@ -14,6 +14,8 @@ export default function MapSection() {
   const panelRef = useRef(null);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
     const ctx = gsap.context(() => {
       gsap.from(panelRef.current, {
         scrollTrigger: { trigger: "#map-section", start: "top 75%" },

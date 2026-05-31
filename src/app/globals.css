@@ -70,7 +70,7 @@ body {
   color: white !important;
   font-size: 20px !important;
   font-weight: 500 !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
   cursor: pointer !important;
 }
 
@@ -91,4 +91,18 @@ body {
 
 .leaflet-control-attribution {
   display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipe-flow {
+    animation: none !important;
+  }
+
+  #map-section [style*="animation"] {
+    animation: none !important;
+  }
+
+  .leaflet-control-zoom a {
+    transition: none !important;
+  }
 }

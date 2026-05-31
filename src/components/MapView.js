@@ -92,6 +92,8 @@ export default function MapView() {
   const mapRef = useRef(null);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
     const ctx = gsap.context(() => {
       gsap.from(sectionRef.current, {
         scrollTrigger: { trigger: sectionRef.current, start: "top 85%" },
@@ -104,7 +106,7 @@ export default function MapView() {
   }, []);
 
   return (
-    <section id="map-section" ref={sectionRef} className="relative h-screen w-full overflow-hidden">
+    <section id="map-section" ref={sectionRef} className="relative h-screen w-full overflow-hidden scroll-mt-16" style={{ touchAction: "manipulation" }}>
       <MapContainer
         center={[14.654, -91.285]}
         zoom={14}
@@ -212,7 +214,7 @@ export default function MapView() {
       <div className="pointer-events-none absolute inset-0 z-[3]">
         <div className="pointer-events-auto absolute left-5 top-5 flex items-center gap-3 rounded-xl bg-black/50 px-4 py-3 text-white backdrop-blur-md">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg>
           </div>
           <div>
             <h2 className="text-sm font-semibold">Mapa de Tuberías</h2>

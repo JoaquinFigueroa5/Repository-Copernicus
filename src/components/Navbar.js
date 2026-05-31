@@ -31,7 +31,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-colors duration-300 ${
         scrolled
           ? "bg-white/80 backdrop-blur-xl shadow-xs border-b border-border"
           : "bg-transparent"
@@ -44,7 +44,7 @@ export default function Navbar() {
               scrolled ? "bg-primary text-white" : "bg-white/20 text-white backdrop-blur-sm"
             }`}
           >
-            <Satellite size={18} />
+            <Satellite size={18} aria-hidden="true" />
           </div>
           <span
             className={`text-lg font-semibold tracking-tight transition-colors ${
@@ -64,7 +64,7 @@ export default function Navbar() {
                 : "text-white/80 hover:bg-white/10 hover:text-white"
             }`}
           >
-            <Map size={16} />
+            <Map size={16} aria-hidden="true" />
             Mapa
           </button>
           <button
@@ -75,14 +75,14 @@ export default function Navbar() {
                 : "text-white/60 hover:bg-white/10 hover:text-white"
             }`}
           >
-            <BookOpen size={16} />
+            <BookOpen size={16} aria-hidden="true" />
             Docs
           </button>
         </div>
       </div>
 
       {showToast && (
-        <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2">
+        <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2" role="status" aria-live="polite">
           <div className="rounded-xl bg-foreground px-5 py-3 text-sm text-white shadow-lg">
             Documentación en desarrollo — Pronto disponible
           </div>

@@ -12,10 +12,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  themeColor: "#1b4332",
+  colorScheme: "light",
+};
+
 export const metadata = {
-  title: "Satélites y Tuberías — Detección de Fugas",
+  title: "Satélites y Tuberías — Detección de Fugas en Guatemala",
   description:
-    "Localización de fugas en tuberías subterráneas para agricultores. Tecnología satelital aplicada al campo.",
+    "Localización de fugas en tuberías subterráneas para agricultores. Tecnología satelital aplicada al campo en zonas rurales de Guatemala.",
+  openGraph: {
+    title: "Satélites y Tuberías — Detección de Fugas",
+    description:
+      "Localización de fugas en tuberías subterráneas para agricultores. Tecnología satelital aplicada al campo.",
+    type: "website",
+    locale: "es_GT",
+    siteName: "Satélites y Tuberías",
+  },
+  twitter: {
+    card: "summary",
+    title: "Satélites y Tuberías — Detección de Fugas",
+    description:
+      "Localización de fugas en tuberías subterráneas para agricultores. Tecnología satelital aplicada al campo.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }) {

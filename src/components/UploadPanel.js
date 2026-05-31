@@ -83,17 +83,19 @@ export default function UploadPanel({ variant = "default" }) {
 
   return (
     <section className={`flex flex-col gap-3 rounded-2xl ${panelBg} p-5 transition-all`}>
-      <div
+      <button
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
+        type="button"
         className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-5 text-center transition-all duration-200 ${
           dragOver ? "border-primary bg-primary/10" : dropBg
         }`}
         onClick={() => inputRef.current?.click()}
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Upload size={20} />
+          <Upload size={20} aria-hidden="true" />
         </div>
         <div>
           <p className="text-sm font-medium text-foreground">
@@ -103,14 +105,16 @@ export default function UploadPanel({ variant = "default" }) {
             GeoJSON, JSON o CSV
           </p>
         </div>
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".geojson,.json,.csv"
-          className="hidden"
-          onChange={handleFileInput}
-        />
-      </div>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".geojson,.json,.csv"
+        className="sr-only"
+        onChange={handleFileInput}
+        aria-label="Seleccionar archivo GeoJSON, JSON o CSV"
+        tabIndex={-1}
+      />
 
       <div className="flex gap-2">
         <button
@@ -118,7 +122,7 @@ export default function UploadPanel({ variant = "default" }) {
           disabled={loading}
           className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-dark disabled:opacity-50"
         >
-          <FileUp size={15} />
+          <FileUp size={15} aria-hidden="true" />
           Subir archivo
         </button>
         <button
@@ -126,15 +130,15 @@ export default function UploadPanel({ variant = "default" }) {
           disabled={loading}
           className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-accent bg-accent/10 px-3 py-2.5 text-sm font-medium text-accent transition-all hover:bg-accent/20 disabled:opacity-50"
         >
-          <Beaker size={15} />
+          <Beaker size={15} aria-hidden="true" />
           Ejemplo
         </button>
       </div>
 
       {loading && (
-        <div className="flex items-center justify-center gap-2 rounded-xl border border-border/50 bg-white/50 p-4">
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-border/50 bg-white/50 p-4" role="status" aria-live="polite">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <span className="text-xs text-muted">Analizando datos...</span>
+          <span className="text-xs text-muted">Analizando datos&hellip;</span>
         </div>
       )}
 

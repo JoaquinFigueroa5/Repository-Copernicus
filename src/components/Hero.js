@@ -8,6 +8,8 @@ export default function Hero() {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
     const ctx = gsap.context(() => {
       gsap.from(containerRef.current.querySelectorAll("[data-gsap]"), {
         opacity: 0,
@@ -30,15 +32,15 @@ export default function Hero() {
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
         <div data-gsap className="mx-auto mb-8 flex items-center justify-center gap-4">
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white backdrop-blur-sm">
-            <Satellite size={28} />
+            <Satellite size={28} aria-hidden="true" />
           </span>
           <span className="h-px w-16 bg-white/20" />
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white backdrop-blur-sm">
-            <Droplets size={28} />
+            <Droplets size={28} aria-hidden="true" />
           </span>
           <span className="h-px w-16 bg-white/20" />
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white backdrop-blur-sm">
-            <TreePine size={28} />
+            <TreePine size={28} aria-hidden="true" />
           </span>
         </div>
 
