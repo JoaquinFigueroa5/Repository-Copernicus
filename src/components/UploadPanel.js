@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Upload, FileUp, FileImage, Beaker } from "lucide-react";
+import { Upload, FileUp, Beaker } from "lucide-react";
 import DataCard from "./DataCard";
 
 const SAMPLE_DATA = {
@@ -12,18 +12,20 @@ const SAMPLE_DATA = {
   sectors: ["Norte", "Este"],
   status: "warning",
   details: [
-    { label: "Coordenadas", value: "4.7110°N, 74.0721°W" },
+    { label: "Coordenadas", value: "14.650°N, 91.300°W" },
     { label: "Extensión", value: "3.2 km de tubería" },
     { label: "Fugas detectadas", value: "2 — Sectores Norte y Este" },
     { label: "Presión promedio", value: "1.8 bar (bajo)" },
   ],
 };
 
-export default function UploadPanel() {
+export default function UploadPanel({ variant = "default" }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef(null);
+
+  const overlay = variant === "overlay";
 
   function parseFile(file) {
     setLoading(true);
@@ -39,22 +41,10 @@ export default function UploadPanel() {
         sectors: ["Norte", "Centro"],
         status: Math.random() > 0.4 ? "warning" : "safe",
         details: [
-          {
-            label: "Coordenadas",
-            value: `~4.71${Math.floor(Math.random() * 9)}°N, 74.07${Math.floor(Math.random() * 9)}°W`,
-          },
-          {
-            label: "Extensión",
-            value: `${(Math.random() * 5 + 1).toFixed(1)} km de tubería`,
-          },
-          {
-            label: "Fugas detectadas",
-            value: `${Math.floor(Math.random() * 4)} — Sectores censados`,
-          },
-          {
-            label: "Archivo",
-            value: file.name,
-          },
+          { label: "Coordenadas", value: `~14.65°N, 91.30°W` },
+          { label: "Extensión", value: `${(Math.random() * 5 + 1).toFixed(1)} km de tubería` },
+          { label: "Fugas detectadas", value: `${Math.floor(Math.random() * 4)} — Sectores censados` },
+          { label: "Archivo", value: file.name },
         ],
       };
       setData(mock);
@@ -65,7 +55,6 @@ export default function UploadPanel() {
   function loadSample() {
     setLoading(true);
     setData(null);
-
     setTimeout(() => {
       setData(SAMPLE_DATA);
       setLoading(false);
@@ -84,28 +73,34 @@ export default function UploadPanel() {
     if (file) parseFile(file);
   }
 
+  const panelBg = overlay
+    ? "bg-white/90 backdrop-blur-xl shadow-lg border border-white/20"
+    : "bg-surface border border-border shadow-sm";
+
+  const dropBg = overlay
+    ? "bg-white/50 border-white/30 hover:border-primary/60"
+    : "bg-surface border-border hover:border-primary/40";
+
   return (
-    <section className="flex flex-col gap-4">
+    <section className={`flex flex-col gap-3 rounded-2xl ${panelBg} p-5 transition-all`}>
       <div
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
-        className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed p-8 text-center transition-all duration-200 ${
-          dragOver
-            ? "border-primary bg-primary/5"
-            : "border-border bg-surface hover:border-primary/40 hover:bg-primary/[0.02]"
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-5 text-center transition-all duration-200 ${
+          dragOver ? "border-primary bg-primary/10" : dropBg
         }`}
         onClick={() => inputRef.current?.click()}
       >
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Upload size={22} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <Upload size={20} />
         </div>
         <div>
           <p className="text-sm font-medium text-foreground">
             Arrastra tu archivo aquí
           </p>
-          <p className="mt-1 text-xs text-muted">
-            GeoJSON, JSON o CSV — Análisis satelital
+          <p className="mt-0.5 text-xs text-muted">
+            GeoJSON, JSON o CSV
           </p>
         </div>
         <input
@@ -117,34 +112,34 @@ export default function UploadPanel() {
         />
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         <button
           onClick={() => inputRef.current?.click()}
           disabled={loading}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-white transition-all hover:bg-primary-dark disabled:opacity-50"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary-dark disabled:opacity-50"
         >
-          <FileUp size={16} />
+          <FileUp size={15} />
           Subir archivo
         </button>
         <button
           onClick={loadSample}
           disabled={loading}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-accent bg-accent/10 px-4 py-3 text-sm font-medium text-accent transition-all hover:bg-accent/20 disabled:opacity-50"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-accent bg-accent/10 px-3 py-2.5 text-sm font-medium text-accent transition-all hover:bg-accent/20 disabled:opacity-50"
         >
-          <Beaker size={16} />
+          <Beaker size={15} />
           Ejemplo
         </button>
       </div>
 
       {loading && (
-        <div className="flex items-center justify-center gap-3 rounded-xl border border-border bg-surface p-6">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <span className="text-sm text-muted">Analizando datos...</span>
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-border/50 bg-white/50 p-4">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <span className="text-xs text-muted">Analizando datos...</span>
         </div>
       )}
 
       {data && !loading && (
-        <DataCard data={data} onClear={() => setData(null)} />
+        <DataCard data={data} onClear={() => setData(null)} overlay />
       )}
     </section>
   );
